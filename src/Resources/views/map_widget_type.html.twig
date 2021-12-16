@@ -1,8 +1,20 @@
-{% block map_widget %}
+{% block leaflet_map_widget %}
     {{ leaflet_stylesheet('#' ~ dom) }}
-
+    
     {{ leaflet_javascript() }}
-
+    <div class="input-group mb-3">
+        {{ form_widget(form, form.vars.attr) }}
+        <div class="input-group-append">
+            <a class="btn btn-outline-primary" onclick="return ToggleReadOnlyState();">
+                <i class="fa fa-edit"></i> {{ 'manual_update_location'|trans }}
+            </a>
+        </div>
+        
+    </div>
+    <div class="alert alert-success" role="alert">
+        <p>{{ 'leaflet_select_location_message'|trans }}</p>
+    </div>
+            
     <div id="{{ dom }}"></div>
 
     {{ leaflet_map_javascript(dom, locationPoint) }}
@@ -18,10 +30,19 @@
 
         //Add a marker to show where you clicked.
         theMarker = L.marker([lat, lon]);
-        theMarker.addTo(map).bindPopup('Anda Membuat Marker Disini. <br><br> Pastikan Lokasi Anda Sudah Benar Dan Sesuai Dengan Alamat Yang Anda Isikan . !!', {autoClose: false}).openPopup();
+        theMarker.addTo(map)
+                .bindPopup('{{ 'marker_message'|trans|raw }}', {autoClose: false})
+                .openPopup();
 
-        $('#store_location').val(lat + "," + lon);
+        $('#{{ id }}').val(lat + "," + lon);
         clickZoom(e);
     });
+    
+    function ToggleReadOnlyState() 
+    {
+        let field = $('#{{ id }}');
+        field.attr('readonly', !field.attr('readonly'));
+        field.focus();
+    }
     </script>
 {% endblock %}

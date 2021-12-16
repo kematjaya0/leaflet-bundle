@@ -5,3 +5,5 @@ services:
         
     Kematjaya\LeafletBundle\Twig\LeafletMapExtension:
         tags: ['twig.extension']
+        
+    Kematjaya\LeafletBundle\Type\LeafletMapType: ~
