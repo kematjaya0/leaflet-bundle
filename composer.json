@@ -20,6 +20,7 @@
     },
     "require": {
         "symfony/framework-bundle": "^5.2",
-        "symfony/yaml": "^5.2"
+        "symfony/yaml": "^5.2",
+        "symfony/twig-bundle": "^5.2"
     }
 }

@@ -1,0 +1,173 @@
+<script>
+var zoom = {{ zoom }};
+var mbAttr = '';
+var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={{ mapBoxToken }}';
+
+//deklarasi map - leaflet library
+var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
+var GoogleTraffic = L.tileLayer('https://{s}.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        min5oom: 2,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+var openstreetmap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+var baseLayers = {
+    "OpenStreet": openstreetmap,
+    "Grayscale": grayscale,
+    "Sattelite": googleHybrid,
+    "Gmap": googleStreets,
+    "GTraffic": GoogleTraffic
+};
+
+var map = L.map('{{ dom }}', {
+    attributionControl: false,
+    center: [{{ centerMap }}],
+    zoom: zoom,
+    zoomControl: false,
+    layers: [GoogleTraffic]
+});
+map.options.minZoom = 7;
+
+map.addControl(new L.Control.Search({
+    url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+    jsonpParam: 'json_callback',
+    propertyName: 'display_name',
+    propertyLoc: ['lat', 'lon'],
+    marker: L.circleMarker([0, 0], {radius: 20}),
+    autoCollapse: true,
+    autoType: false,
+    minLength: 2
+}));
+
+L.control.layers(baseLayers).addTo(map);
+
+L.Control.zoomHome = L.Control.extend({
+    options: {
+        position: 'topright',
+        zoomInText: '+',
+        zoomInTitle: 'Zoom in',
+        zoomOutText: '-',
+        zoomOutTitle: 'Zoom out',
+        zoomHomeText: '<i class="fa fa-home" style="line-height:1;"></i>',
+        zoomHomeTitle: 'Zoom home'
+    },
+
+    onAdd: function (map) {
+        var controlName = 'gin-control-zoom',
+            container = L.DomUtil.create('div', controlName + ' leaflet-bar'),
+            options = this.options;
+
+        this._zoomInButton = this._createButton(options.zoomInText, options.zoomInTitle,
+            controlName + '-in', container, this._zoomIn);
+        this._zoomHomeButton = this._createButton(options.zoomHomeText, options.zoomHomeTitle,
+            controlName + '-home', container, this._zoomHome);
+        this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
+            controlName + '-out', container, this._zoomOut);
+
+        this._updateDisabled();
+        map.on('zoomend zoomlevelschange', this._updateDisabled, this);
+
+        return container;
+    },
+
+    onRemove: function (map) {
+        map.off('zoomend zoomlevelschange', this._updateDisabled, this);
+    },
+
+    _zoomIn: function (e) {
+        this._map.zoomIn(e.shiftKey ? 3 : 1);
+    },
+
+    _zoomOut: function (e) {
+        this._map.zoomOut(e.shiftKey ? 3 : 1);
+    },
+
+    _zoomHome: function (e) {
+        map.setView([{{ zoomHome }}], zoom);
+    },
+
+    _createButton: function (html, title, className, container, fn) {
+        var link = L.DomUtil.create('a', className, container);
+        link.innerHTML = html;
+        link.href = '#';
+        link.title = title;
+
+        L.DomEvent.on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
+            .on(link, 'click', L.DomEvent.stop)
+            .on(link, 'click', fn, this)
+            .on(link, 'click', this._refocusOnMap, this);
+
+        return link;
+    },
+
+    _updateDisabled: function () {
+        var map = this._map,
+            className = 'leaflet-disabled';
+
+        L.DomUtil.removeClass(this._zoomInButton, className);
+        L.DomUtil.removeClass(this._zoomOutButton, className);
+
+        if (map._zoom === map.getMinZoom()) {
+            L.DomUtil.addClass(this._zoomOutButton, className);
+        }
+        if (map._zoom === map.getMaxZoom()) {
+            L.DomUtil.addClass(this._zoomInButton, className);
+        }
+    }
+
+});
+
+// add the new control to the map
+var zoomHome = new L.Control.zoomHome({position: 'topleft'});
+zoomHome.addTo(map);
+
+// create fullscreen control
+var fsControl = new L.Control.FullScreen();
+// add fullscreen control to the map
+map.addControl(fsControl);
+
+// detect fullscreen toggling
+map.on('enterFullscreen', function () {
+    if (window.console) window.console.log('enterFullscreen');
+});
+map.on('exitFullscreen', function () {
+    if (window.console) window.console.log('exitFullscreen');
+});
+
+L.control.locate().addTo(map);
+
+var miniMap = new L.Control.MiniMap(googleStreets, {
+    toggleDisplay: true,
+    autoToggleDisplay: true,
+    width: 150,
+    height: 150
+}).addTo(map);
+L.control.scale({position: 'bottomright'}).addTo(map);
+
+var theMarker = {};
+
+{% if locationPoint %}
+var baseballIcon = L.icon({
+    iconUrl: '{{ asset('bundles/leaflet/leaflet/images/marker-icon-2x.png') }}',
+    iconSize: [25, 37],
+    iconAnchor: [25, 37],
+    popupAnchor: [0, -28]
+});
+theMarker = L.marker([{{ locationPoint }}], {icon: baseballIcon}).addTo(map);
+map.setView([{{ locationPoint }}], zoom);
+{% endif %}
+
+function clickZoom(e) {
+
+    map.setView(e.latlng, 15);
+}  
+</script>

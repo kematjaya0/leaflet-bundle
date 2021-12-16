@@ -1,0 +1,24 @@
+{{ leaflet_stylesheet('#' ~ dom) }}
+    
+{{ leaflet_javascript() }}
+
+<div id="{{ dom }}"></div>
+
+{{ leaflet_map_javascript(dom, locationPoint) }}
+
+<script>
+map.on('click', function (e) {
+    lat = e.latlng.lat;
+    lon = e.latlng.lng;
+
+    if (theMarker != undefined) {
+        map.removeLayer(theMarker);
+    }
+
+    //Add a marker to show where you clicked.
+    theMarker = L.marker([lat, lon]);
+    theMarker.addTo(map);
+    
+    clickZoom(e);
+});
+</script>

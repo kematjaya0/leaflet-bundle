@@ -2,3 +2,6 @@ services:
     _defaults:
         public: true
         autowire: true
+        
+    Kematjaya\LeafletBundle\Twig\LeafletMapExtension:
+        tags: ['twig.extension']
