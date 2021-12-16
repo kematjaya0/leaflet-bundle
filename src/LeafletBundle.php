@@ -7,12 +7,14 @@
 
 namespace Kematjaya\LeafletBundle;
 
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 /**
  * Description of LeafletBundle
  *
  * @author guest
  */
-class LeafletBundle 
+class LeafletBundle extends Bundle
 {
     //put your code here
 }
