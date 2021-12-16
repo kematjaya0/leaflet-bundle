@@ -1,0 +1,25 @@
+{
+    "name": "kematjaya/leaflet-bundle",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nur Hidayatullah",
+            "email": "kematjaya0@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kematjaya\\LeafletBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kematjaya\\LeafletBundle\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "symfony/framework-bundle": "^5.2",
+        "symfony/yaml": "^5.2"
+    }
+}
