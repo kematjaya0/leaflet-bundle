@@ -23,3 +23,17 @@ $builder
       ]);
 ...
 ```
+4. use distance calculator
+```
+...
+use Kematjaya\LeafletBundle\Calculator\Point;
+use Kematjaya\LeafletBundle\Calculator\DistanceCalculatorInterface;
+...
+public function test(DistanceCalculatorInterface $distanceCalculator) 
+{
+    $from = new Point(-7.345728218434821, 112.76383132697055);
+    $to = new Point(-7.2491223553386375, 112.79650342712807);
+
+    $distance = $distanceCalculator->getDistance($from, $to); // in KM
+}
+```

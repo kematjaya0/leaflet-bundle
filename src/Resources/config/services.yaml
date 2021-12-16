@@ -7,3 +7,5 @@ services:
         tags: ['twig.extension']
         
     Kematjaya\LeafletBundle\Type\LeafletMapType: ~
+    Kematjaya\LeafletBundle\Calculator\DistanceCalculatorInterface:
+        class: Kematjaya\LeafletBundle\Calculator\HaversineCalculator
