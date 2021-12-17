@@ -70,7 +70,7 @@ class LeafletMapExtension extends AbstractExtension
     
     public function renderMapJS(string $dom = 'map', string $locationPoint = null)
     {
-        $configs = $this->getLeafletConfigurations();dump($configs);exit;
+        $configs = $this->getLeafletConfigurations();
         return $this->twig->render('@Leaflet/map_js.twig', [
             'dom' => $dom,
             'zoom' => $configs['map']['zoom_value'],
