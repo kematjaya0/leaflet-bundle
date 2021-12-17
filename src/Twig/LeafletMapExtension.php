@@ -10,6 +10,7 @@ namespace Kematjaya\LeafletBundle\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Twig\Environment;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Description of StylesheetExtension
@@ -24,9 +25,16 @@ class LeafletMapExtension extends AbstractExtension
      */
     private $twig;
     
-    public function __construct(Environment $twig) 
+    /**
+     * 
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+    
+    public function __construct(Environment $twig, ParameterBagInterface $parameterBag) 
     {
         $this->twig = $twig;
+        $this->parameterBag = $parameterBag;
     }
     
     public function getFunctions()
@@ -62,13 +70,19 @@ class LeafletMapExtension extends AbstractExtension
     
     public function renderMapJS(string $dom = 'map', string $locationPoint = null)
     {
+        $configs = $this->getLeafletConfigurations();dump($configs);exit;
         return $this->twig->render('@Leaflet/map_js.twig', [
             'dom' => $dom,
-            'zoom' => 11,
+            'zoom' => $configs['map']['zoom_value'],
             'locationPoint' => $locationPoint,
-            'zoomHome' => null !== $locationPoint ? $locationPoint : '-7.11092982443696, 112.4210759355084',
-            'centerMap' => '-7.293421341699741, 112.73709354459358',
-            'mapBoxToken' => 'pk.eyJ1Ijoia2VtYXRqYXlhMCIsImEiOiJja3g3YnVuOXYzMHR1MzBybnpwOXdzcHEyIn0.6SHN_wm_7OYl0Zyi6I0ARg'
+            'zoomHome' => null !== $locationPoint ? $locationPoint : $configs['map']['zoom_point'],
+            'centerMap' => $configs['map']['center_point'],
+            'mapBoxToken' => $configs['map_box']['api_token'],
         ]);
+    }
+    
+    protected function getLeafletConfigurations():array
+    {
+        return $this->parameterBag->get('leaflet');
     }
 }

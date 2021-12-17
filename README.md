@@ -23,6 +23,20 @@ $builder
       ]);
 ...
 ```
+4. create configuration file config/packages/leaflet.yaml
+```
+leaflet:
+    map_box: 
+        api_token: '%env(resolve:LEAFLET_MAPBOX_TOKEN)%'
+    map: 
+        center_point: '%env(resolve:LEAFLET_MAP_CENTER_POINT)%'
+        zoom_point: '%env(resolve:LEAFLET_MAP_CENTER_POINT)%'
+```
+and add value to .env
+```
+LEAFLET_MAPBOX_TOKEN=your.mapbox.token
+LEAFLET_MAP_CENTER_POINT=longlat point ## example: '-7.293421341699741, 112.73709354459358'
+```
 4. use distance calculator
 ```
 ...
