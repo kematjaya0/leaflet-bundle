@@ -22,9 +22,13 @@ class LeafletExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader(
-                $container, 
-                new FileLocator(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Resources/config')
-            );
+            $container, 
+            new FileLocator(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Resources/config')
+        );
         $loader->load('services.yaml');
+        
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter($this->getAlias(), $config);
     }
 }
