@@ -37,7 +37,7 @@ class LeafletMapExtension extends AbstractExtension
         $this->parameterBag = $parameterBag;
     }
     
-    public function getFunctions()
+    public function getFunctions():array
     {
         return [
             new TwigFunction('leaflet_render', [$this, 'render'], ['is_safe' => ['html']]),
@@ -47,7 +47,7 @@ class LeafletMapExtension extends AbstractExtension
         ];
     }
     
-    public function stylesheet(string $dom = '#map', string $width = '100%', string $height = '350px')
+    public function stylesheet(string $dom = '#map', string $width = '100%', string $height = '350px'):?string
     {
         return $this->twig->render('@Leaflet/stylesheets.twig', [
             'dom' => $dom, 'width' => $width,
@@ -55,12 +55,12 @@ class LeafletMapExtension extends AbstractExtension
         ]);
     }
     
-    public function javascript()
+    public function javascript():?string
     {
         return $this->twig->render('@Leaflet/javascripts.twig');
     }
     
-    public function render(string $dom = 'map', string $locationPoint = null)
+    public function render(string $dom = 'map', string $locationPoint = null):?string
     {
         return $this->twig->render('@Leaflet/map.twig', [
             'dom' => $dom,
@@ -68,7 +68,7 @@ class LeafletMapExtension extends AbstractExtension
         ]);
     }
     
-    public function renderMapJS(string $dom = 'map', string $locationPoint = null)
+    public function renderMapJS(string $dom = 'map', string $locationPoint = null):?string
     {
         $configs = $this->getLeafletConfigurations();
         return $this->twig->render('@Leaflet/map_js.twig', [

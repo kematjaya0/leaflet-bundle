@@ -21,6 +21,7 @@ class LeafletMapType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     * @return string Description
      */
     public function getParent()
     {
@@ -29,6 +30,7 @@ class LeafletMapType extends AbstractType
 
     /**
      * {@inheritdoc}
+     * @return string Description
      */
     public function getBlockPrefix()
     {

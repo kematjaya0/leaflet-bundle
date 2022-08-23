@@ -2,6 +2,7 @@
     "name": "kematjaya/leaflet-bundle",
     "type": "library",
     "license": "MIT",
+    "description": "provide map for get latitude and longitude base on leaflet.js",
     "authors": [
         {
             "name": "Nur Hidayatullah",
