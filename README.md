@@ -31,7 +31,10 @@ leaflet:
     map_box: 
         api_token: '%env(resolve:LEAFLET_MAPBOX_TOKEN)%'
     map: 
-        lock_at_center: true # lock map at center point, default true
+        lock_map: true # lock map at center point, default true
+        lock_coordinates:
+            southwest: "-7.777488, 114.776975" # point lock
+            northeast: "-7.403438, 110.834149" # point lock
         min_zoom: 8          # minimal zoom available, default 8
         max_zoom: 20         # maximal zoom available, default 20
         zoom_value: 11       # default zoom when map loaded
