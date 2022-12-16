@@ -1,10 +1,5 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-
 namespace Kematjaya\LeafletBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -42,6 +37,15 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('map')
                 ->addDefaultsIfNotSet()
                 ->children()
+                    ->booleanNode("lock_at_center")
+                        ->defaultValue(true)
+                    ->end()
+                    ->scalarNode('min_zoom')
+                        ->defaultValue(8)
+                    ->end()
+                    ->scalarNode('max_zoom')
+                        ->defaultValue(18)
+                    ->end()
                     ->scalarNode('center_point')
                         ->defaultValue('-7.293421341699741, 112.73709354459358')
                     ->end()
@@ -50,6 +54,9 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('zoom_value')
                         ->defaultValue(11)
+                    ->end()
+                    ->scalarNode('on_click_zoom')
+                        ->defaultValue(14)
                     ->end()
                 ->end()
             ->end();

@@ -19,7 +19,9 @@ use Kematjaya\LeafletBundle\Type\LeafletMapType
 ...
 $builder
       ->add('location', LeafletMapType::class, [
-          'label' => 'location'
+          'label' => 'location',
+          "map_height" => "350px", // default 250px
+          "map_width" => "100%", // default 100%
       ]);
 ...
 ```
@@ -29,6 +31,11 @@ leaflet:
     map_box: 
         api_token: '%env(resolve:LEAFLET_MAPBOX_TOKEN)%'
     map: 
+        lock_at_center: true # lock map at center point, default true
+        min_zoom: 8          # minimal zoom available, default 8
+        max_zoom: 20         # maximal zoom available, default 20
+        zoom_value: 11       # default zoom when map loaded
+        on_click_zoom: 14    # zoom when map clicked, default 14
         center_point: '%env(resolve:LEAFLET_MAP_CENTER_POINT)%'
         zoom_point: '%env(resolve:LEAFLET_MAP_CENTER_POINT)%'
 ```

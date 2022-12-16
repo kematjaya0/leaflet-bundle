@@ -1,16 +1,12 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-
 namespace Kematjaya\LeafletBundle\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Description of LeafletMapType
@@ -21,7 +17,6 @@ class LeafletMapType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     * @return string Description
      */
     public function getParent()
     {
@@ -30,7 +25,6 @@ class LeafletMapType extends AbstractType
 
     /**
      * {@inheritdoc}
-     * @return string Description
      */
     public function getBlockPrefix()
     {
@@ -39,8 +33,18 @@ class LeafletMapType extends AbstractType
     
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $view->vars["map"] = ["width" => $options["map_width"], "height" => $options["map_height"]];
         $view->vars['dom'] = sprintf("%s_map", $view->vars['id']);
         $view->vars['locationPoint'] = $view->vars['value'];
         $view->vars['attr'] = array_merge(['readonly' => true], $view->vars['attr']);
+    }
+    
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefined(['map_width', 'map_height']);
+        $resolver->setDefaults([
+            'map_width' => "100%",
+            'map_height' => "350px"
+        ]);
     }
 }

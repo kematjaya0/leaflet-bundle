@@ -1,10 +1,5 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-
 namespace Kematjaya\LeafletBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -37,7 +32,7 @@ class LeafletMapExtension extends AbstractExtension
         $this->parameterBag = $parameterBag;
     }
     
-    public function getFunctions():array
+    public function getFunctions()
     {
         return [
             new TwigFunction('leaflet_render', [$this, 'render'], ['is_safe' => ['html']]),
@@ -47,7 +42,7 @@ class LeafletMapExtension extends AbstractExtension
         ];
     }
     
-    public function stylesheet(string $dom = '#map', string $width = '100%', string $height = '350px'):?string
+    public function stylesheet(string $dom = '#map', string $width = '100%', string $height = '350px')
     {
         return $this->twig->render('@Leaflet/stylesheets.twig', [
             'dom' => $dom, 'width' => $width,
@@ -55,12 +50,12 @@ class LeafletMapExtension extends AbstractExtension
         ]);
     }
     
-    public function javascript():?string
+    public function javascript()
     {
         return $this->twig->render('@Leaflet/javascripts.twig');
     }
     
-    public function render(string $dom = 'map', string $locationPoint = null):?string
+    public function render(string $dom = 'map', string $locationPoint = null)
     {
         return $this->twig->render('@Leaflet/map.twig', [
             'dom' => $dom,
@@ -68,12 +63,16 @@ class LeafletMapExtension extends AbstractExtension
         ]);
     }
     
-    public function renderMapJS(string $dom = 'map', string $locationPoint = null):?string
+    public function renderMapJS(string $dom = 'map', string $locationPoint = null)
     {
         $configs = $this->getLeafletConfigurations();
         return $this->twig->render('@Leaflet/map_js.twig', [
             'dom' => $dom,
             'zoom' => $configs['map']['zoom_value'],
+            'min_zoom' => $configs['map']['min_zoom'],
+            'max_zoom' => $configs['map']['max_zoom'],
+            "on_click_zoom" => $configs["map"]["on_click_zoom"],
+            "is_lock" => $configs["map"]["lock_at_center"],
             'locationPoint' => $locationPoint,
             'zoomHome' => null !== $locationPoint ? $locationPoint : $configs['map']['zoom_point'],
             'centerMap' => $configs['map']['center_point'],

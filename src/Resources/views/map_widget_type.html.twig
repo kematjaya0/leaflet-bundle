@@ -1,5 +1,5 @@
 {% block leaflet_map_widget %}
-    {{ leaflet_stylesheet('#' ~ dom) }}
+    {{ leaflet_stylesheet('#' ~ dom, map.width, map.height) }}
     
     {{ leaflet_javascript() }}
     <div class="input-group mb-3">
@@ -36,6 +36,11 @@
 
         $('#{{ id }}').val(lat + "," + lon);
         clickZoom(e);
+        
+        el = document.getElementById('{{ id }}');
+        ev = document.createEvent('Event');
+        ev.initEvent('change', true, false);
+        el.dispatchEvent(ev);
     });
     
     function ToggleReadOnlyState() 

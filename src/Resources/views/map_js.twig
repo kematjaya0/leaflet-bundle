@@ -6,17 +6,17 @@ var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 //deklarasi map - leaflet library
 var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr});
 var GoogleTraffic = L.tileLayer('https://{s}.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
+        maxZoom: {{ max_zoom }},
         min5oom: 2,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
+        maxZoom: {{ max_zoom }},
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 var openstreetmap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
+        maxZoom: {{ max_zoom }},
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
@@ -28,14 +28,29 @@ var baseLayers = {
     "GTraffic": GoogleTraffic
 };
 
+{% if is_lock %}        
+var map = L.map('{{ dom }}', {
+    attributionControl: false,
+    center: [{{ centerMap }}],
+    zoom: zoom,
+    zoomControl: false,
+    layers: [GoogleTraffic],
+    maxBounds: [
+        [{{ centerMap }}],
+        [{{ centerMap }}]
+    ]
+});
+{% else %}
 var map = L.map('{{ dom }}', {
     attributionControl: false,
     center: [{{ centerMap }}],
     zoom: zoom,
     zoomControl: false,
     layers: [GoogleTraffic]
-});
-map.options.minZoom = 7;
+});  
+{% endif %}
+
+map.options.minZoom = {{ min_zoom }};
 
 map.addControl(new L.Control.Search({
     url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
@@ -168,6 +183,6 @@ map.setView([{{ locationPoint }}], zoom);
 
 function clickZoom(e) {
 
-    map.setView(e.latlng, 15);
+    map.setView(e.latlng, {{ on_click_zoom }});
 }  
 </script>
