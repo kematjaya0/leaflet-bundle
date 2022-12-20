@@ -35,7 +35,7 @@ var map = L.map('{{ dom }}', {
     zoom: zoom,
     zoomControl: false,
     layers: [GoogleTraffic],
-    bounds: [
+    maxBounds: [
         [{{ lock_southwest_point }}],
         [{{ lock_northeast_point }}]
     ]
