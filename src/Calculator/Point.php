@@ -12,32 +12,16 @@ namespace Kematjaya\LeafletBundle\Calculator;
  *
  * @author guest
  */
-class Point 
+class Point
 {
-    /**
-     * 
-     * @var float
-     */
-    private $latitude;
-    
-    /**
-     * 
-     * @var float
-     */
-    private $longitute;
-    
-    public function __construct(float $latitude, float $longitute) 
-    {
-        $this->latitude = $latitude;
-        $this->longitute = $longitute;
-    }
-    
-    public function getLatitude(): float 
+    public function __construct(private readonly float $latitude, private readonly float $longitute) {}
+
+    public function getLatitude(): float
     {
         return $this->latitude;
     }
 
-    public function getLongitute(): float 
+    public function getLongitute(): float
     {
         return $this->longitute;
     }

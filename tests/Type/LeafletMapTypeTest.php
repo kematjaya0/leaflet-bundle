@@ -4,6 +4,7 @@ namespace Kematjaya\LeafletBundle\Tests;
 
 use Kematjaya\LeafletBundle\Type\LeafletMapType;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LeafletMapTypeTest extends TestCase
 {
@@ -22,11 +23,11 @@ class LeafletMapTypeTest extends TestCase
     public function testConfigureOptions(): void
     {
         $type = new LeafletMapType();
-        $resolver = new \Symfony\Component\OptionsResolver\OptionsResolver();
+        $resolver = new OptionsResolver();
         $type->configureOptions($resolver);
-        
+
         $options = $resolver->resolve([]);
-        
+
         $this->assertEquals('100%', $options['map_width']);
         $this->assertEquals('350px', $options['map_height']);
     }

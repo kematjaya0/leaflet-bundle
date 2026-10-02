@@ -7,13 +7,10 @@
 
 namespace Kematjaya\LeafletBundle\Calculator;
 
-use Kematjaya\LeafletBundle\Calculator\Point;
-
 /**
- *
  * @author guest
  */
-interface DistanceCalculatorInterface 
+interface DistanceCalculatorInterface
 {
-    public function getDistance(Point $pointA, Point $pointB):float;
+    public function getDistance(Point $pointA, Point $pointB): float;
 }

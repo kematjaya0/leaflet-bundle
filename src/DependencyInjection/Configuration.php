@@ -2,28 +2,28 @@
 
 namespace Kematjaya\LeafletBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Description of Configuration
  *
  * @author guest
  */
-class Configuration implements ConfigurationInterface 
+class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder(): TreeBuilder 
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('leaflet');
         $rootNode = $treeBuilder->getRootNode();
-        
+
         $this->addChildConfiguration($rootNode->children());
-        
+
         return $treeBuilder;
     }
 
-    protected function addChildConfiguration(NodeBuilder $node)
+    protected function addChildConfiguration(NodeBuilder $node): void
     {
         $node
             ->arrayNode('map_box')
